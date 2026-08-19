@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="cs">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Pivní počítadlo</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+
+<body>
+
+    <header class="app-header">
+        <h1>🍺 Pivní počítadlo</h1>
+    </header>
+
+
+    <!-- HLAVNÍ ZÁLOŽKY -->
+
+    <nav class="tabs">
+
+        <button
+            class="tab-button active"
+            data-tab="current"
+        >
+            Aktuální sud
+        </button>
+
+        <button
+            class="tab-button"
+            data-tab="history"
+        >
+            Historie
+        </button>
+
+        <button
+            class="tab-button"
+            data-tab="stats"
+        >
+            Statistiky
+        </button>
+
+    </nav>
+
+
+    <main>
+
+        <!-- =========================
+             AKTUÁLNÍ SUD
+        ========================== -->
+
+        <section
+            id="tab-current"
+            class="tab-content active"
+        >
+
+            <!-- Založení nového sudu -->
+
+            <div id="kegSetup"></div>
+
+
+            <!-- Informace o aktuálním sudu -->
+
+            <div id="currentKegInfo"></div>
+
+
+            <!-- ČÁRKOVÁNÍ -->
+
+            <section class="section-card">
+
+                <h2>Čárkování</h2>
+
+                <!-- Výběr člověka -->
+
+                <div id="peopleSelector"></div>
+
+
+                <!-- Ovládání vybraného člověka -->
+
+                <div id="selectedPersonPanel"></div>
+
+            </section>
+
+
+            <!-- SPRÁVA LIDÍ -->
+
+            <section class="section-card">
+
+                <details>
+
+                    <summary>
+                        Správa lidí
+                    </summary>
+
+
+                    <div class="people-management">
+
+                        <div class="add-person">
+
+                            <input
+                                type="text"
+                                id="personName"
+                                placeholder="Jméno"
+                            >
+
+                            <button
+                                id="addPersonButton"
+                                class="normal-button"
+                            >
+                                Přidat
+                            </button>
+
+                        </div>
+
+
+                        <div id="peopleManagementList"></div>
+
+                    </div>
+
+                </details>
+
+            </section>
+
+
+            <!-- SOUHRN AKTUÁLNÍHO SUDU -->
+
+            <div id="currentSummary"></div>
+
+        </section>
+
+
+        <!-- =========================
+             HISTORIE
+        ========================== -->
+
+        <section
+            id="tab-history"
+            class="tab-content"
+        >
+
+            <h2>Historie sudů</h2>
+
+            <div id="history"></div>
+
+        </section>
+
+
+        <!-- =========================
+             STATISTIKY
+        ========================== -->
+
+        <section
+            id="tab-stats"
+            class="tab-content"
+        >
+
+            <h2>Statistiky</h2>
+
+            <div id="statistics"></div>
+
+
+            <!-- ZÁLOHA -->
+
+            <section class="section-card data-section">
+
+                <h2>Data a záloha</h2>
+
+                <p>
+                    Záloha obsahuje seznam lidí,
+                    aktuální sud i celou historii.
+                </p>
+
+
+                <div class="data-buttons">
+
+                    <button
+                        id="exportButton"
+                        class="normal-button"
+                    >
+                        Exportovat zálohu
+                    </button>
+
+
+                    <label class="normal-button file-label">
+
+                        Importovat zálohu
+
+                        <input
+                            type="file"
+                            id="importFile"
+                            accept=".json,application/json"
+                        >
+
+                    </label>
+
+                </div>
+
+
+                <button
+                    id="deleteAllButton"
+                    class="danger-button delete-all"
+                >
+                    Smazat všechna data
+                </button>
+
+            </section>
+
+        </section>
+
+    </main>
+
+
+    <script src="app.js"></script>
+
+</body>
+
+</html>

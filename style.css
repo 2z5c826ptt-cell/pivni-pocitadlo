@@ -1,0 +1,1072 @@
+/* =========================
+   ZÁKLAD
+========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+
+body {
+    margin: 0;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    background: #f3f4f6;
+    color: #222;
+}
+
+
+/* =========================
+   HLAVIČKA
+========================= */
+
+.app-header {
+    background: white;
+
+    padding: 18px 16px 12px;
+
+    text-align: center;
+}
+
+
+.app-header h1 {
+    margin: 0;
+
+    font-size: 27px;
+}
+
+
+/* =========================
+   ZÁLOŽKY
+========================= */
+
+.tabs {
+    position: sticky;
+    top: 0;
+
+    z-index: 10;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    background: white;
+
+    border-bottom:
+        1px solid #ddd;
+}
+
+
+.tab-button {
+    border: none;
+
+    background: white;
+
+    padding: 16px 5px;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+
+    border-bottom:
+        4px solid transparent;
+}
+
+
+.tab-button.active {
+    border-bottom-color: #2e7d32;
+
+    color: #2e7d32;
+}
+
+
+/* =========================
+   HLAVNÍ OBSAH
+========================= */
+
+main {
+    max-width: 750px;
+
+    margin: auto;
+
+    padding:
+        18px
+        14px
+        60px;
+}
+
+
+.tab-content {
+    display: none;
+}
+
+
+.tab-content.active {
+    display: block;
+}
+
+
+/* =========================
+   OBECNÉ KARTY
+========================= */
+
+.section-card,
+.keg-card,
+.summary-card,
+.stats-card {
+
+    background: white;
+
+    border-radius: 16px;
+
+    padding: 18px;
+
+    margin-bottom: 16px;
+
+    box-shadow:
+        0 2px 8px
+        rgba(0, 0, 0, 0.07);
+}
+
+
+.section-card h2,
+.summary-card h2,
+.stats-card h2 {
+
+    margin-top: 0;
+}
+
+
+/* =========================
+   FORMULÁŘE
+========================= */
+
+input {
+    width: 100%;
+
+    border:
+        1px solid #bbb;
+
+    border-radius: 9px;
+
+    padding: 13px;
+
+    font-size: 17px;
+}
+
+
+.normal-button {
+    padding:
+        12px 16px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background: #555;
+
+    color: white;
+
+    font-size: 15px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   NOVÝ SUD
+========================= */
+
+.new-keg-form {
+    display: grid;
+
+    gap: 12px;
+}
+
+
+.start-keg-button {
+    padding: 18px;
+
+    background: #2e7d32;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 12px;
+
+    font-size: 20px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   AKTUÁLNÍ SUD
+========================= */
+
+.current-keg {
+    background: #fff8e1;
+
+    border:
+        2px solid #f2c94c;
+
+    border-radius: 16px;
+
+    padding: 18px;
+
+    margin-bottom: 18px;
+}
+
+
+.current-keg h2 {
+    margin-top: 0;
+
+    margin-bottom: 6px;
+
+    font-size: 25px;
+}
+
+
+.keg-actions {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+
+    margin-top: 15px;
+}
+
+
+.close-keg-button {
+    flex: 1;
+
+    padding: 14px;
+
+    border: none;
+
+    border-radius: 10px;
+
+    background: #333;
+
+    color: white;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   VÝBĚR ČLOVĚKA
+========================= */
+
+.people-selector {
+    display: grid;
+
+    grid-template-columns:
+        repeat(
+            auto-fit,
+            minmax(95px, 1fr)
+        );
+
+    gap: 9px;
+
+    margin-bottom: 20px;
+}
+
+
+.person-select-button {
+    padding:
+        13px 8px;
+
+    border:
+        2px solid #ddd;
+
+    border-radius: 10px;
+
+    background: #f5f5f5;
+
+    color: #222;
+
+    font-size: 16px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.person-select-button.selected {
+    background: #333;
+
+    color: white;
+
+    border-color: #333;
+}
+
+
+/* =========================
+   VYBRANÝ ČLOVĚK
+========================= */
+
+.selected-person-panel {
+    background: #fafafa;
+
+    border-radius: 16px;
+
+    padding: 18px;
+}
+
+
+.selected-person-name {
+    text-align: center;
+
+    font-size: 31px;
+    font-weight: 800;
+
+    margin-bottom: 18px;
+}
+
+
+/* POČTY PIV */
+
+.selected-counts {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 12px;
+
+    margin-bottom: 20px;
+}
+
+
+.selected-count {
+    background: white;
+
+    padding: 14px;
+
+    border-radius: 12px;
+
+    text-align: center;
+}
+
+
+.selected-count-label {
+    display: block;
+
+    font-size: 16px;
+
+    margin-bottom: 4px;
+}
+
+
+.selected-count-value {
+    font-size: 34px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   VELKÁ PLUSOVÁ TLAČÍTKA
+========================= */
+
+.big-plus-buttons {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 12px;
+}
+
+
+.big-plus-button {
+    min-height: 110px;
+
+    border: none;
+
+    border-radius: 20px;
+
+    background: #2eaf52;
+
+    color: white;
+
+    font-size: 24px;
+    font-weight: 800;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 3px 7px
+        rgba(0, 0, 0, 0.15);
+}
+
+
+.big-plus-button:active {
+    transform: scale(0.96);
+}
+
+
+/* =========================
+   MENŠÍ MÍNUSOVÁ TLAČÍTKA
+========================= */
+
+.minus-action-buttons {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 12px;
+
+    margin-top: 12px;
+}
+
+
+.minus-action-button {
+    min-height: 48px;
+
+    border: none;
+
+    border-radius: 12px;
+
+    background: #e53935;
+
+    color: white;
+
+    font-size: 17px;
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.minus-action-button:active {
+    transform: scale(0.97);
+}
+
+
+/* =========================
+   SPRÁVA LIDÍ
+========================= */
+
+details summary {
+    cursor: pointer;
+
+    font-size: 18px;
+
+    font-weight: bold;
+}
+
+
+.people-management {
+    margin-top: 18px;
+}
+
+
+.add-person {
+    display: flex;
+
+    gap: 10px;
+
+    margin-bottom: 18px;
+}
+
+
+.add-person input {
+    flex: 1;
+}
+
+
+.management-person {
+    display: flex;
+
+    align-items: center;
+
+    justify-content:
+        space-between;
+
+    gap: 10px;
+
+    padding:
+        11px 0;
+
+    border-top:
+        1px solid #eee;
+}
+
+
+.management-person:first-child {
+    border-top: none;
+}
+
+
+.management-person-name {
+    font-size: 17px;
+
+    font-weight: bold;
+}
+
+
+.management-actions {
+    display: flex;
+
+    gap: 7px;
+}
+
+
+.management-button {
+    padding:
+        7px 10px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #eee;
+
+    cursor: pointer;
+}
+
+
+.management-delete {
+    color: #a00000;
+}
+
+
+/* =========================
+   SOUHRN
+========================= */
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 10px;
+}
+
+
+.summary-item {
+    background: #f5f5f5;
+
+    padding: 12px;
+
+    border-radius: 10px;
+}
+
+
+.summary-value {
+    display: block;
+
+    margin-top: 4px;
+
+    font-size: 22px;
+
+    font-weight: bold;
+}
+
+
+/* =========================
+   HISTORIE
+========================= */
+
+.keg-card h3 {
+    margin-top: 0;
+
+    margin-bottom: 7px;
+
+    font-size: 23px;
+}
+
+
+.keg-meta {
+    color: #666;
+
+    font-size: 14px;
+
+    margin-bottom: 15px;
+}
+
+
+.history-people {
+    margin-top: 18px;
+}
+
+
+.history-person {
+    display: grid;
+
+    grid-template-columns:
+        1fr auto;
+
+    gap: 10px;
+
+    align-items: center;
+
+    border-top:
+        1px solid #eee;
+
+    padding:
+        12px 0;
+}
+
+
+.history-person strong {
+    display: block;
+
+    font-size: 17px;
+}
+
+
+.payment {
+    margin-top: 3px;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
+    color: #2e7d32;
+}
+
+
+.small-edit-button {
+    padding:
+        7px 10px;
+
+    border: none;
+
+    border-radius: 7px;
+
+    background: #eee;
+
+    cursor: pointer;
+}
+
+
+/* =========================
+   STATISTIKY
+========================= */
+
+.stats-person {
+    border-top:
+        1px solid #ddd;
+
+    padding:
+        15px 0;
+}
+
+
+.stats-person:first-child {
+    border-top: none;
+}
+
+
+.stats-person-name {
+    font-size: 20px;
+
+    font-weight: bold;
+
+    margin-bottom: 6px;
+}
+
+
+.stats-line {
+    color: #444;
+
+    margin:
+        3px 0;
+}
+
+
+/* =========================
+   ZÁLOHA
+========================= */
+
+.data-buttons {
+    display: flex;
+
+    flex-wrap: wrap;
+
+    gap: 10px;
+}
+
+
+.file-label {
+    display: inline-block;
+
+    cursor: pointer;
+}
+
+
+.file-label input {
+    display: none;
+}
+
+
+/* =========================
+   SMAZÁNÍ
+========================= */
+
+.danger-button {
+    border: none;
+
+    border-radius: 9px;
+
+    background: #b00020;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+
+.delete-all {
+    width: 100%;
+
+    margin-top: 25px;
+
+    padding: 14px;
+}
+
+
+/* =========================
+   MOBIL
+========================= */
+
+@media (max-width: 500px) {
+
+    main {
+        padding-left: 10px;
+
+        padding-right: 10px;
+    }
+
+
+    .tab-button {
+        font-size: 14px;
+
+        padding:
+            14px 3px;
+    }
+
+
+    .people-selector {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+
+    .big-plus-button {
+        min-height: 105px;
+
+        font-size: 21px;
+    }
+
+
+    .add-person {
+        flex-direction: column;
+    }
+
+
+    .summary-grid {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .management-person {
+        align-items:
+            flex-start;
+    }
+
+
+    .management-actions {
+        flex-direction: column;
+    }
+
+}
+
+/* =========================
+   MOBILNÍ VÝBĚR ČLOVĚKA
+========================= */
+
+.mobile-person-selector {
+    display: none;
+}
+
+.person-select-dropdown {
+    width: 100%;
+    padding: 15px;
+
+    border: 2px solid #333;
+    border-radius: 12px;
+
+    background: white;
+
+    font-size: 20px;
+    font-weight: bold;
+}
+
+
+/* =========================
+   MOBILNÍ VERZE
+========================= */
+
+@media (max-width: 600px) {
+
+    body {
+        padding-bottom: 72px;
+    }
+
+
+    /* MENŠÍ HLAVIČKA */
+
+    .app-header {
+        padding: 10px;
+    }
+
+    .app-header h1 {
+        font-size: 22px;
+    }
+
+
+    /* ZÁLOŽKY DOLŮ */
+
+    .tabs {
+        position: fixed;
+
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+
+        z-index: 100;
+
+        height: 64px;
+
+        border-top: 1px solid #ccc;
+        border-bottom: none;
+
+        box-shadow:
+            0 -2px 10px
+            rgba(0, 0, 0, 0.08);
+    }
+
+
+    .tab-button {
+        padding: 8px 2px;
+
+        font-size: 13px;
+
+        border-bottom: none;
+        border-top: 4px solid transparent;
+    }
+
+
+    .tab-button.active {
+        border-bottom: none;
+
+        border-top-color: #2e7d32;
+    }
+
+
+    /* MÉNĚ OKRAJŮ */
+
+    main {
+        padding:
+            10px
+            8px
+            20px;
+    }
+
+
+    .section-card,
+    .summary-card,
+    .stats-card,
+    .keg-card {
+
+        border-radius: 12px;
+
+        padding: 13px;
+
+        margin-bottom: 10px;
+    }
+
+
+    /* DESKTOPOVÁ JMÉNA SCHOVAT */
+
+    .desktop-person-selector {
+        display: none;
+    }
+
+
+    /* MOBILNÍ SELECT ZOBRAZIT */
+
+    .mobile-person-selector {
+        display: grid;
+
+        gap: 6px;
+
+        margin-bottom: 14px;
+    }
+
+
+    .mobile-person-selector label {
+        font-size: 14px;
+        font-weight: bold;
+
+        color: #666;
+    }
+
+
+    /* PANEL ČLOVĚKA */
+
+    .selected-person-panel {
+        padding: 12px;
+
+        border-radius: 12px;
+    }
+
+
+    .selected-person-name {
+        font-size: 27px;
+
+        margin-bottom: 12px;
+    }
+
+
+    /* POČTY */
+
+    .selected-counts {
+        gap: 8px;
+
+        margin-bottom: 12px;
+    }
+
+
+    .selected-count {
+        padding: 9px;
+    }
+
+
+    .selected-count-value {
+        font-size: 30px;
+    }
+
+
+    /* PLUS POD SEBOU */
+
+    .big-plus-buttons {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+    }
+
+
+    .big-plus-button {
+        min-height: 82px;
+
+        width: 100%;
+
+        font-size: 24px;
+
+        border-radius: 16px;
+    }
+
+
+    /* MÍNUS VEDLE SEBE */
+
+    .minus-action-buttons {
+        gap: 8px;
+
+        margin-top: 9px;
+    }
+
+
+    .minus-action-button {
+        min-height: 44px;
+
+        font-size: 16px;
+    }
+
+
+    /* AKTUÁLNÍ SUD */
+
+    .current-keg {
+        padding: 12px;
+
+        margin-bottom: 10px;
+
+        border-radius: 12px;
+    }
+
+
+    .current-keg h2 {
+        font-size: 21px;
+    }
+
+
+    /* SOUHRN */
+
+    .summary-grid {
+        gap: 7px;
+    }
+
+
+    .summary-item {
+        padding: 9px;
+
+        font-size: 13px;
+    }
+
+
+    .summary-value {
+        font-size: 19px;
+    }
+
+
+    /* SPRÁVA LIDÍ */
+
+    details summary {
+        padding: 5px 0;
+    }
+
+
+    .management-person {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .management-actions {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+
+    .management-button {
+        min-height: 40px;
+    }
+
+}
