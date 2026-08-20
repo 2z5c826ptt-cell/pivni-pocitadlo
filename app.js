@@ -2,24 +2,18 @@
    NASTAVENÍ
 ========================= */
 
-const STORAGE_KEY =
-    "beerTrackerStateV3";
-
-
-/*
-    Malé pivo se počítá jako
-    polovina velkého.
-*/
+const STORAGE_KEY = "beerTrackerStateV3";
 
 const SMALL_BEER_FACTOR = 0.5;
 
+let selectedPersonId = null;
 
 /*
-    Aktuálně vybraný člověk.
-    Toto není nutné ukládat.
+    Poslední změna slouží pro Undo.
+    Necháváme ji pouze v paměti,
+    není nutné ji ukládat do localStorage.
 */
-
-let selectedPersonId = null;
+let lastBeerAction = null;
 
 
 /* =========================
@@ -31,16 +25,10 @@ let state = loadState();
 
 function loadState() {
 
-    /*
-        Nejprve zkusíme aktuální
-        verzi dat.
-    */
-
     const saved =
         localStorage.getItem(
             STORAGE_KEY
         );
-
 
     if (saved) {
 
@@ -56,36 +44,24 @@ function loadState() {
                 "Chyba při načítání dat:",
                 error
             );
-
         }
-
     }
 
-
-    /*
-        Pokud existují data ze starší
-        verze aplikace, pokusíme se
-        je převést.
-    */
 
     const olderVersion =
         localStorage.getItem(
             "beerTrackerStateV2"
         );
 
-
     if (olderVersion) {
 
         try {
 
-            const converted =
-                normalizeState(
-                    JSON.parse(
-                        olderVersion
-                    )
-                );
-
-            return converted;
+            return normalizeState(
+                JSON.parse(
+                    olderVersion
+                )
+            );
 
         } catch (error) {
 
@@ -93,15 +69,9 @@ function loadState() {
                 "Starší data se nepodařilo načíst.",
                 error
             );
-
         }
-
     }
 
-
-    /*
-        Úplně stará verze aplikace.
-    */
 
     let oldPeople = [];
     let oldCurrentKeg = null;
@@ -136,7 +106,6 @@ function loadState() {
         console.error(
             "Stará data se nepodařilo načíst."
         );
-
     }
 
 
@@ -169,7 +138,6 @@ function loadState() {
                 const personId =
                     people[index].id;
 
-
                 counts[personId] = {
 
                     large:
@@ -183,7 +151,6 @@ function loadState() {
                         ) || 0
 
                 };
-
             }
         );
 
@@ -209,9 +176,7 @@ function loadState() {
 
             counts:
                 counts
-
         };
-
     }
 
 
@@ -281,9 +246,7 @@ function loadState() {
 
         history:
             history
-
     };
-
 }
 
 
@@ -347,9 +310,7 @@ function normalizeState(data) {
             counts:
                 data.currentKeg.counts ||
                 {}
-
         };
-
     }
 
 
@@ -369,9 +330,7 @@ function normalizeState(data) {
 
         history:
             history
-
     };
-
 }
 
 
@@ -385,7 +344,6 @@ function saveState() {
         STORAGE_KEY,
         JSON.stringify(state)
     );
-
 }
 
 
@@ -403,7 +361,6 @@ function createId() {
             .toString(36)
             .substring(2)
     );
-
 }
 
 
@@ -435,7 +392,6 @@ function escapeHtml(text) {
             "'",
             "&#039;"
         );
-
 }
 
 
@@ -462,7 +418,6 @@ function formatMoney(value) {
     ).format(
         Number(value) || 0
     );
-
 }
 
 
@@ -482,9 +437,7 @@ function formatDate(date) {
             parsed.getTime()
         )
     ) {
-
         return date;
-
     }
 
 
@@ -492,14 +445,40 @@ function formatDate(date) {
         .toLocaleString(
             "cs-CZ"
         );
+}
 
+
+function formatDateOnly(date) {
+
+    if (!date) {
+        return "";
+    }
+
+
+    const parsed =
+        new Date(date);
+
+
+    if (
+        Number.isNaN(
+            parsed.getTime()
+        )
+    ) {
+        return date;
+    }
+
+
+    return parsed
+        .toLocaleDateString(
+            "cs-CZ"
+        );
 }
 
 
 /*
-    Jedna jednotka = jedno velké.
+    Jedna jednotka = jedno velké pivo.
 
-    Malé = 0,5 jednotky.
+    Malé pivo = 0,5 jednotky.
 */
 
 function beerUnits(
@@ -514,7 +493,6 @@ function beerUnits(
         *
         SMALL_BEER_FACTOR
     );
-
 }
 
 
@@ -531,7 +509,6 @@ function startNewKeg() {
         );
 
         return;
-
     }
 
 
@@ -565,7 +542,6 @@ function startNewKeg() {
         );
 
         return;
-
     }
 
 
@@ -580,7 +556,6 @@ function startNewKeg() {
         );
 
         return;
-
     }
 
 
@@ -596,7 +571,6 @@ function startNewKeg() {
                 small: 0
 
             };
-
         }
     );
 
@@ -618,14 +592,20 @@ function startNewKeg() {
 
         counts:
             counts
-
     };
+
+
+    /*
+        Nový sud znamená také
+        nový začátek pro Undo.
+    */
+
+    lastBeerAction = null;
 
 
     saveState();
 
     renderAll();
-
 }
 
 
@@ -665,7 +645,6 @@ function editCurrentKeg() {
         );
 
         return;
-
     }
 
 
@@ -699,7 +678,6 @@ function editCurrentKeg() {
         );
 
         return;
-
     }
 
 
@@ -713,7 +691,6 @@ function editCurrentKeg() {
     saveState();
 
     renderAll();
-
 }
 
 
@@ -733,7 +710,6 @@ function getCurrentCount(
             small: 0
 
         };
-
     }
 
 
@@ -749,13 +725,11 @@ function getCurrentCount(
                 small: 0
 
             };
-
     }
 
 
     return state.currentKeg
         .counts[personId];
-
 }
 
 
@@ -776,7 +750,19 @@ function changeBeer(
         );
 
         return;
+    }
 
+
+    const person =
+        state.people.find(
+            person =>
+                person.id ===
+                personId
+        );
+
+
+    if (!person) {
+        return;
     }
 
 
@@ -786,17 +772,61 @@ function changeBeer(
         );
 
 
-    count[type] +=
-        amount;
+    const before =
+        Number(
+            count[type]
+        ) || 0;
 
 
-    if (
-        count[type] < 0
-    ) {
+    let after =
+        before + amount;
 
-        count[type] = 0;
 
+    if (after < 0) {
+        after = 0;
     }
+
+
+    /*
+        Pokud už je hodnota nula
+        a uživatel stiskne mínus,
+        nic se nestalo.
+    */
+
+    if (after === before) {
+        return;
+    }
+
+
+    count[type] =
+        after;
+
+
+    /*
+        Zapamatujeme si přesnou změnu,
+        abychom ji mohli vrátit.
+    */
+
+    lastBeerAction = {
+
+        personId:
+            personId,
+
+        personName:
+            person.name,
+
+        type:
+            type,
+
+        before:
+            before,
+
+        after:
+            after,
+
+        amount:
+            after - before
+    };
 
 
     saveState();
@@ -805,7 +835,65 @@ function changeBeer(
     renderSelectedPersonPanel();
 
     renderCurrentSummary();
+}
 
+
+/* =========================
+   UNDO POSLEDNÍ AKCE
+========================= */
+
+function undoLastBeerAction() {
+
+    if (!lastBeerAction) {
+        return;
+    }
+
+
+    if (!state.currentKeg) {
+
+        lastBeerAction =
+            null;
+
+        renderSelectedPersonPanel();
+
+        return;
+    }
+
+
+    const action =
+        lastBeerAction;
+
+
+    const count =
+        getCurrentCount(
+            action.personId
+        );
+
+
+    /*
+        Vracíme přesně hodnotu,
+        která byla před poslední změnou.
+    */
+
+    count[action.type] =
+        action.before;
+
+
+    /*
+        Po jednom Undo už další
+        Undo není možné.
+    */
+
+    lastBeerAction =
+        null;
+
+
+    saveState();
+
+
+    renderSelectedPersonPanel();
+
+    renderCurrentSummary();
 }
 
 
@@ -847,7 +935,6 @@ function addPerson() {
         );
 
         return;
-
     }
 
 
@@ -858,7 +945,6 @@ function addPerson() {
 
         name:
             name
-
     };
 
 
@@ -876,7 +962,6 @@ function addPerson() {
                 small: 0
 
             };
-
     }
 
 
@@ -890,7 +975,6 @@ function addPerson() {
     saveState();
 
     renderAll();
-
 }
 
 
@@ -938,7 +1022,6 @@ function renamePerson(
         );
 
         return;
-
     }
 
 
@@ -962,7 +1045,6 @@ function renamePerson(
         );
 
         return;
-
     }
 
 
@@ -971,18 +1053,12 @@ function renamePerson(
 
 
     /*
-        V historii jméno úmyslně
-        neměníme.
-
-        Historie tak zachovává stav,
-        který byl v době uzavření sudu.
+        Historická jména neměníme.
     */
-
 
     saveState();
 
     renderAll();
-
 }
 
 
@@ -1007,11 +1083,6 @@ function deletePerson(
     }
 
 
-    /*
-        Pokud už má v aktuálním sudu
-        piva, nedovolíme ho smazat.
-    */
-
     if (state.currentKeg) {
 
         const count =
@@ -1031,9 +1102,7 @@ function deletePerson(
             );
 
             return;
-
         }
-
     }
 
 
@@ -1061,7 +1130,6 @@ function deletePerson(
         delete state
             .currentKeg
             .counts[personId];
-
     }
 
 
@@ -1072,14 +1140,29 @@ function deletePerson(
 
         selectedPersonId =
             null;
+    }
 
+
+    /*
+        Pokud se poslední akce týkala
+        smazaného člověka, Undo zrušíme.
+    */
+
+    if (
+        lastBeerAction
+        &&
+        lastBeerAction.personId ===
+            personId
+    ) {
+
+        lastBeerAction =
+            null;
     }
 
 
     saveState();
 
     renderAll();
-
 }
 
 
@@ -1088,11 +1171,6 @@ function deletePerson(
 ========================= */
 
 function ensureSelectedPerson() {
-
-    /*
-        Pokud vybraný člověk
-        stále existuje, nic neměníme.
-    */
 
     if (
         selectedPersonId
@@ -1103,16 +1181,9 @@ function ensureSelectedPerson() {
                 selectedPersonId
         )
     ) {
-
         return;
-
     }
 
-
-    /*
-        Jinak vybereme prvního
-        člověka v seznamu.
-    */
 
     if (
         state.people.length > 0
@@ -1125,9 +1196,7 @@ function ensureSelectedPerson() {
 
         selectedPersonId =
             null;
-
     }
-
 }
 
 
@@ -1142,7 +1211,6 @@ function selectPerson(
     renderPeopleSelector();
 
     renderSelectedPersonPanel();
-
 }
 
 
@@ -1181,7 +1249,6 @@ function calculateCurrentKeg() {
                 Number(
                     count.small
                 ) || 0;
-
         }
     );
 
@@ -1221,9 +1288,7 @@ function calculateCurrentKeg() {
             pricePerUnit
             *
             SMALL_BEER_FACTOR
-
     };
-
 }
 
 
@@ -1253,7 +1318,6 @@ function calculateHistoryKeg(
                 Number(
                     person.small
                 ) || 0;
-
         }
     );
 
@@ -1293,9 +1357,7 @@ function calculateHistoryKeg(
             pricePerUnit
             *
             SMALL_BEER_FACTOR
-
     };
-
 }
 
 
@@ -1327,7 +1389,6 @@ function closeCurrentKeg() {
         );
 
         return;
-
     }
 
 
@@ -1353,9 +1414,7 @@ function closeCurrentKeg() {
             if (
                 units === 0
             ) {
-
                 return;
-
             }
 
 
@@ -1374,7 +1433,6 @@ function closeCurrentKeg() {
                 `${count.small} malých`
                 +
                 ` → ${formatMoney(payment)}`;
-
         }
     );
 
@@ -1429,11 +1487,6 @@ function closeCurrentKeg() {
     }
 
 
-    /*
-        Do historie uložíme kopii
-        aktuálního stavu.
-    */
-
     const record = {
 
         id:
@@ -1477,10 +1530,8 @@ function closeCurrentKeg() {
                             count.small
 
                     };
-
                 }
             )
-
     };
 
 
@@ -1489,15 +1540,11 @@ function closeCurrentKeg() {
     );
 
 
-    /*
-        Seznam lidí zůstává.
-
-        Pouze aktuální sud zmizí.
-        Při založení nového sudu
-        dostanou všichni opět nuly.
-    */
-
     state.currentKeg =
+        null;
+
+
+    lastBeerAction =
         null;
 
 
@@ -1505,16 +1552,9 @@ function closeCurrentKeg() {
 
     renderAll();
 
-
-    /*
-        Po uzavření automaticky
-        přejdeme do historie.
-    */
-
     switchTab(
         "history"
     );
-
 }
 
 
@@ -1560,7 +1600,6 @@ function editHistoryKeg(
         );
 
         return;
-
     }
 
 
@@ -1574,9 +1613,7 @@ function editHistoryKeg(
     if (
         priceText === null
     ) {
-
         return;
-
     }
 
 
@@ -1598,7 +1635,6 @@ function editHistoryKeg(
         );
 
         return;
-
     }
 
 
@@ -1613,7 +1649,6 @@ function editHistoryKeg(
     saveState();
 
     renderAll();
-
 }
 
 
@@ -1660,9 +1695,7 @@ function editHistoryPerson(
     if (
         largeText === null
     ) {
-
         return;
-
     }
 
 
@@ -1683,7 +1716,6 @@ function editHistoryPerson(
         );
 
         return;
-
     }
 
 
@@ -1697,9 +1729,7 @@ function editHistoryPerson(
     if (
         smallText === null
     ) {
-
         return;
-
     }
 
 
@@ -1720,7 +1750,6 @@ function editHistoryPerson(
         );
 
         return;
-
     }
 
 
@@ -1732,18 +1761,9 @@ function editHistoryPerson(
         small;
 
 
-    /*
-        Nemusíme ručně přepočítávat
-        peníze.
-
-        Vždy se počítají z aktuálních
-        čárek daného sudu.
-    */
-
     saveState();
 
     renderAll();
-
 }
 
 
@@ -1764,7 +1784,6 @@ function renderKegSetup() {
         element.innerHTML = "";
 
         return;
-
     }
 
 
@@ -1774,7 +1793,6 @@ function renderKegSetup() {
 
             <h2>Založit nový sud</h2>
 
-
             <div class="new-keg-form">
 
                 <input
@@ -1782,7 +1800,6 @@ function renderKegSetup() {
                     id="newKegName"
                     placeholder="Název sudu, např. Bernard 11°"
                 >
-
 
                 <input
                     type="number"
@@ -1792,7 +1809,6 @@ function renderKegSetup() {
                     min="0"
                     step="0.01"
                 >
-
 
                 <button
                     class="start-keg-button"
@@ -1806,7 +1822,6 @@ function renderKegSetup() {
         </section>
 
     `;
-
 }
 
 
@@ -1827,7 +1842,6 @@ function renderCurrentKegInfo() {
         element.innerHTML = "";
 
         return;
-
     }
 
 
@@ -1843,7 +1857,6 @@ function renderCurrentKegInfo() {
                 🍺 ${escapeHtml(keg.name)}
             </h2>
 
-
             <div>
                 Cena sudu:
 
@@ -1852,13 +1865,11 @@ function renderCurrentKegInfo() {
                 </strong>
             </div>
 
-
             <div>
                 Začátek:
 
                 ${formatDate(keg.started)}
             </div>
-
 
             <div class="keg-actions">
 
@@ -1868,7 +1879,6 @@ function renderCurrentKegInfo() {
                 >
                     Upravit sud
                 </button>
-
 
                 <button
                     class="close-keg-button"
@@ -1882,7 +1892,6 @@ function renderCurrentKegInfo() {
         </section>
 
     `;
-
 }
 
 
@@ -1894,15 +1903,19 @@ function renderPeopleSelector() {
 
     ensureSelectedPerson();
 
+
     const element =
         document.getElementById(
             "peopleSelector"
         );
 
+
     element.innerHTML = "";
 
 
-    if (state.people.length === 0) {
+    if (
+        state.people.length === 0
+    ) {
 
         element.innerHTML = `
             <p>
@@ -1916,55 +1929,61 @@ function renderPeopleSelector() {
 
 
     /*
-        Desktopová tlačítka
+        DESKTOP
     */
 
     const buttons =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     buttons.className =
         "people-selector desktop-person-selector";
 
 
-    state.people.forEach(person => {
+    state.people.forEach(
+        person => {
 
-        const button =
-            document.createElement("button");
-
-        button.className =
-            "person-select-button";
-
-
-        if (
-            person.id === selectedPersonId
-        ) {
-
-            button.classList.add(
-                "selected"
-            );
-
-        }
-
-
-        button.textContent =
-            person.name;
-
-
-        button.onclick =
-            function() {
-
-                selectPerson(
-                    person.id
+            const button =
+                document.createElement(
+                    "button"
                 );
 
-            };
+
+            button.className =
+                "person-select-button";
 
 
-        buttons.appendChild(
-            button
-        );
+            if (
+                person.id ===
+                selectedPersonId
+            ) {
 
-    });
+                button.classList.add(
+                    "selected"
+                );
+            }
+
+
+            button.textContent =
+                person.name;
+
+
+            button.onclick =
+                function() {
+
+                    selectPerson(
+                        person.id
+                    );
+                };
+
+
+            buttons.appendChild(
+                button
+            );
+        }
+    );
 
 
     element.appendChild(
@@ -1973,53 +1992,66 @@ function renderPeopleSelector() {
 
 
     /*
-        Mobilní rozbalovací seznam
+        MOBIL
     */
 
     const mobileWrapper =
-        document.createElement("div");
+        document.createElement(
+            "div"
+        );
+
 
     mobileWrapper.className =
         "mobile-person-selector";
 
 
     const label =
-        document.createElement("label");
+        document.createElement(
+            "label"
+        );
+
 
     label.textContent =
         "Vyber člověka";
 
 
     const select =
-        document.createElement("select");
+        document.createElement(
+            "select"
+        );
+
 
     select.className =
         "person-select-dropdown";
 
 
-    state.people.forEach(person => {
+    state.people.forEach(
+        person => {
 
-        const option =
-            document.createElement(
-                "option"
+            const option =
+                document.createElement(
+                    "option"
+                );
+
+
+            option.value =
+                person.id;
+
+
+            option.textContent =
+                person.name;
+
+
+            option.selected =
+                person.id ===
+                selectedPersonId;
+
+
+            select.appendChild(
+                option
             );
-
-        option.value =
-            person.id;
-
-        option.textContent =
-            person.name;
-
-        option.selected =
-            person.id ===
-            selectedPersonId;
-
-
-        select.appendChild(
-            option
-        );
-
-    });
+        }
+    );
 
 
     select.addEventListener(
@@ -2029,7 +2061,6 @@ function renderPeopleSelector() {
             selectPerson(
                 this.value
             );
-
         }
     );
 
@@ -2037,6 +2068,7 @@ function renderPeopleSelector() {
     mobileWrapper.appendChild(
         label
     );
+
 
     mobileWrapper.appendChild(
         select
@@ -2046,7 +2078,6 @@ function renderPeopleSelector() {
     element.appendChild(
         mobileWrapper
     );
-
 }
 
 
@@ -2100,20 +2131,69 @@ function renderSelectedPersonPanel() {
             "disabled";
 
 
+    let undoHtml = "";
+
+
+    if (
+        lastBeerAction
+        &&
+        state.currentKeg
+    ) {
+
+        const beerName =
+            lastBeerAction.type ===
+                "large"
+                ?
+                "velké"
+                :
+                "malé";
+
+
+        const sign =
+            lastBeerAction.amount > 0
+                ?
+                "+"
+                :
+                "−";
+
+
+        undoHtml = `
+
+            <div class="undo-box">
+
+                <span>
+                    Poslední:
+                    <strong>
+                        ${escapeHtml(
+                            lastBeerAction.personName
+                        )}
+                        ${sign}1 ${beerName}
+                    </strong>
+                </span>
+
+                <button
+                    class="undo-button"
+                    onclick="undoLastBeerAction()"
+                >
+                    ↶ Vrátit
+                </button>
+
+            </div>
+
+        `;
+    }
+
+
     element.innerHTML = `
 
         <div class="selected-person-panel">
 
-
             <div class="selected-person-name">
-
                 ${escapeHtml(person.name)}
-
             </div>
 
 
             <div class="selected-counts">
-
 
                 <div class="selected-count">
 
@@ -2140,12 +2220,10 @@ function renderSelectedPersonPanel() {
 
                 </div>
 
-
             </div>
 
 
             <div class="big-plus-buttons">
-
 
                 <button
                     class="big-plus-button"
@@ -2164,12 +2242,10 @@ function renderSelectedPersonPanel() {
                     + MALÉ
                 </button>
 
-
             </div>
 
 
             <div class="minus-action-buttons">
-
 
                 <button
                     class="minus-action-button"
@@ -2188,8 +2264,10 @@ function renderSelectedPersonPanel() {
                     − malé
                 </button>
 
-
             </div>
+
+
+            ${undoHtml}
 
 
             ${
@@ -2208,11 +2286,9 @@ function renderSelectedPersonPanel() {
                     ""
             }
 
-
         </div>
 
     `;
-
 }
 
 
@@ -2239,7 +2315,6 @@ function renderPeopleManagement() {
             "<p>Zatím tu nikdo není.</p>";
 
         return;
-
     }
 
 
@@ -2259,14 +2334,10 @@ function renderPeopleManagement() {
             row.innerHTML = `
 
                 <div class="management-person-name">
-
                     ${escapeHtml(person.name)}
-
                 </div>
 
-
                 <div class="management-actions">
-
 
                     <button
                         class="management-button"
@@ -2275,14 +2346,12 @@ function renderPeopleManagement() {
                         Přejmenovat
                     </button>
 
-
                     <button
                         class="management-button management-delete"
                         onclick="deletePerson('${person.id}')"
                     >
                         Smazat
                     </button>
-
 
                 </div>
 
@@ -2292,10 +2361,8 @@ function renderPeopleManagement() {
             element.appendChild(
                 row
             );
-
         }
     );
-
 }
 
 
@@ -2316,7 +2383,6 @@ function renderCurrentSummary() {
         element.innerHTML = "";
 
         return;
-
     }
 
 
@@ -2332,9 +2398,7 @@ function renderCurrentSummary() {
                 Aktuální souhrn
             </h2>
 
-
             <div class="summary-grid">
-
 
                 <div class="summary-item">
 
@@ -2389,7 +2453,6 @@ function renderCurrentSummary() {
 
                 </div>
 
-
             </div>
 
 
@@ -2417,11 +2480,9 @@ function renderCurrentSummary() {
                     `
             }
 
-
         </section>
 
     `;
-
 }
 
 
@@ -2452,7 +2513,6 @@ function renderHistory() {
         `;
 
         return;
-
     }
 
 
@@ -2500,18 +2560,10 @@ function renderHistory() {
                             calc.pricePerUnit;
 
 
-                        /*
-                            Lidi s nulovou spotřebou
-                            v historii nemusíme
-                            zobrazovat.
-                        */
-
                         if (
                             units === 0
                         ) {
-
                             return;
-
                         }
 
 
@@ -2547,7 +2599,6 @@ function renderHistory() {
                             </div>
 
                         `;
-
                     }
                 );
 
@@ -2579,7 +2630,6 @@ function renderHistory() {
 
 
                     <div class="summary-grid">
-
 
                         <div class="summary-item">
 
@@ -2634,7 +2684,6 @@ function renderHistory() {
 
                         </div>
 
-
                     </div>
 
 
@@ -2662,10 +2711,8 @@ function renderHistory() {
                 element.appendChild(
                     card
                 );
-
             }
         );
-
 }
 
 
@@ -2699,7 +2746,6 @@ function renderStatistics() {
         `;
 
         return;
-
     }
 
 
@@ -2765,9 +2811,7 @@ function renderStatistics() {
 
                             paid:
                                 0
-
                         };
-
                     }
 
 
@@ -2807,10 +2851,8 @@ function renderStatistics() {
                         units
                         *
                         calc.pricePerUnit;
-
                 }
             );
-
         }
     );
 
@@ -2848,7 +2890,6 @@ function renderStatistics() {
             peopleHtml += `
 
                 <div class="stats-person">
-
 
                     <div class="stats-person-name">
 
@@ -2901,11 +2942,56 @@ function renderStatistics() {
 
                     </div>
 
+                </div>
+
+            `;
+        }
+    );
+
+
+    /*
+        Souhrn k zaplacení řadíme
+        podle částky od nejvyšší.
+    */
+
+    const paymentPeople =
+        Object.values(
+            peopleStats
+        )
+
+        .filter(
+            person =>
+                person.paid > 0
+        )
+
+        .sort(
+            (a, b) =>
+                b.paid -
+                a.paid
+        );
+
+
+    let paymentHtml = "";
+
+
+    paymentPeople.forEach(
+        person => {
+
+            paymentHtml += `
+
+                <div class="payment-summary-row">
+
+                    <span>
+                        ${escapeHtml(person.name)}
+                    </span>
+
+                    <strong>
+                        ${formatMoney(person.paid)}
+                    </strong>
 
                 </div>
 
             `;
-
         }
     );
 
@@ -2920,7 +3006,6 @@ function renderStatistics() {
 
 
             <div class="summary-grid">
-
 
                 <div class="summary-item">
 
@@ -2965,7 +3050,6 @@ function renderStatistics() {
 
                 </div>
 
-
             </div>
 
 
@@ -2985,21 +3069,35 @@ function renderStatistics() {
         <section class="stats-card">
 
             <h2>
-                Pořadí podle spotřeby
+                K zaplacení
             </h2>
 
+            <p>
+                Součet podílů jednotlivých lidí
+                ze všech uzavřených sudů.
+            </p>
+
+            ${paymentHtml}
+
+        </section>
+
+
+        <section class="stats-card">
+
+            <h2>
+                Pořadí podle spotřeby
+            </h2>
 
             ${peopleHtml}
 
         </section>
 
     `;
-
 }
 
 
 /* =========================
-   EXPORT DAT
+   EXPORT JSON ZÁLOHY
 ========================= */
 
 function exportData() {
@@ -3051,13 +3149,240 @@ function exportData() {
         `pivni-pocitadlo-${date}.json`;
 
 
+    document.body.appendChild(
+        link
+    );
+
+
     link.click();
+
+
+    document.body.removeChild(
+        link
+    );
 
 
     URL.revokeObjectURL(
         url
     );
+}
 
+
+/* =========================
+   EXPORT CSV
+========================= */
+
+function exportCsv() {
+
+    if (
+        state.history.length === 0
+    ) {
+
+        alert(
+            "Není co exportovat. Historie je zatím prázdná."
+        );
+
+        return;
+    }
+
+
+    const rows = [];
+
+
+    /*
+        První řádek = hlavička.
+        Používáme středník, což je
+        pro český Excel praktičtější.
+    */
+
+    rows.push([
+        "Sud",
+        "Datum",
+        "Člověk",
+        "Velká",
+        "Malá",
+        "Jednotky",
+        "Částka"
+    ]);
+
+
+    state.history.forEach(
+        keg => {
+
+            const calc =
+                calculateHistoryKeg(
+                    keg
+                );
+
+
+            keg.people.forEach(
+                person => {
+
+                    const units =
+                        beerUnits(
+                            person.large,
+                            person.small
+                        );
+
+
+                    /*
+                        Nulové řádky do CSV
+                        neexportujeme.
+                    */
+
+                    if (
+                        units === 0
+                    ) {
+                        return;
+                    }
+
+
+                    const payment =
+                        units
+                        *
+                        calc.pricePerUnit;
+
+
+                    rows.push([
+
+                        keg.name,
+
+                        formatDateOnly(
+                            keg.finished
+                        ),
+
+                        person.name,
+
+                        person.large,
+
+                        person.small,
+
+                        String(units)
+                            .replace(".", ","),
+
+                        payment
+                            .toFixed(2)
+                            .replace(".", ",")
+
+                    ]);
+                }
+            );
+        }
+    );
+
+
+    /*
+        Ošetření textu pro CSV.
+        Pokud text obsahuje středník,
+        uvozovku nebo nový řádek,
+        uzavřeme ho do uvozovek.
+    */
+
+    function csvValue(value) {
+
+        const text =
+            String(value ?? "");
+
+
+        if (
+            text.includes(";")
+            ||
+            text.includes('"')
+            ||
+            text.includes("\n")
+        ) {
+
+            return (
+                '"'
+                +
+                text.replaceAll(
+                    '"',
+                    '""'
+                )
+                +
+                '"'
+            );
+        }
+
+
+        return text;
+    }
+
+
+    const csv =
+        rows
+            .map(
+                row =>
+                    row
+                        .map(csvValue)
+                        .join(";")
+            )
+            .join("\n");
+
+
+    /*
+        BOM pomůže Excelu správně
+        poznat UTF-8 a české znaky.
+    */
+
+    const blob =
+        new Blob(
+
+            [
+                "\uFEFF",
+                csv
+            ],
+
+            {
+                type:
+                    "text/csv;charset=utf-8;"
+            }
+
+        );
+
+
+    const url =
+        URL.createObjectURL(
+            blob
+        );
+
+
+    const link =
+        document.createElement(
+            "a"
+        );
+
+
+    const date =
+        new Date()
+            .toISOString()
+            .slice(0, 10);
+
+
+    link.href =
+        url;
+
+
+    link.download =
+        `pivni-pocitadlo-${date}.csv`;
+
+
+    document.body.appendChild(
+        link
+    );
+
+
+    link.click();
+
+
+    document.body.removeChild(
+        link
+    );
+
+
+    URL.revokeObjectURL(
+        url
+    );
 }
 
 
@@ -3112,6 +3437,10 @@ function importData(
                     null;
 
 
+                lastBeerAction =
+                    null;
+
+
                 saveState();
 
                 renderAll();
@@ -3126,16 +3455,13 @@ function importData(
                 alert(
                     "Soubor se nepodařilo načíst. Zkontroluj, že jde o správnou JSON zálohu."
                 );
-
             }
-
         };
 
 
     reader.readAsText(
         file
     );
-
 }
 
 
@@ -3166,11 +3492,6 @@ function deleteAllData() {
         return;
     }
 
-
-    /*
-        Smažeme současnou i starší
-        verze dat.
-    */
 
     localStorage.removeItem(
         STORAGE_KEY
@@ -3204,11 +3525,14 @@ function deleteAllData() {
         currentKeg: null,
 
         history: []
-
     };
 
 
     selectedPersonId =
+        null;
+
+
+    lastBeerAction =
         null;
 
 
@@ -3218,7 +3542,6 @@ function deleteAllData() {
     switchTab(
         "current"
     );
-
 }
 
 
@@ -3250,7 +3573,6 @@ function switchTab(
                         tabName
 
                     );
-
             }
         );
 
@@ -3273,7 +3595,6 @@ function switchTab(
                         `tab-${tabName}`
 
                     );
-
             }
         );
 
@@ -3283,7 +3604,6 @@ function switchTab(
     ) {
 
         renderHistory();
-
     }
 
 
@@ -3292,9 +3612,7 @@ function switchTab(
     ) {
 
         renderStatistics();
-
     }
-
 }
 
 
@@ -3319,13 +3637,13 @@ function renderAll() {
     renderHistory();
 
     renderStatistics();
-
 }
 
 
 /* =========================
    UDÁLOSTI
 ========================= */
+
 
 /*
     Přepínání záložek
@@ -3350,11 +3668,9 @@ document
                                 .dataset
                                 .tab
                         );
-
                     }
 
                 );
-
         }
     );
 
@@ -3393,16 +3709,14 @@ document
             ) {
 
                 addPerson();
-
             }
-
         }
 
     );
 
 
 /*
-    Export
+    Export JSON
 */
 
 document
@@ -3416,7 +3730,21 @@ document
 
 
 /*
-    Import
+    Export CSV
+*/
+
+document
+    .getElementById(
+        "exportCsvButton"
+    )
+    .addEventListener(
+        "click",
+        exportCsv
+    );
+
+
+/*
+    Import JSON
 */
 
 document
@@ -3440,7 +3768,6 @@ document
             */
 
             this.value = "";
-
         }
 
     );

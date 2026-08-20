@@ -6,7 +6,6 @@
     box-sizing: border-box;
 }
 
-
 body {
     margin: 0;
 
@@ -33,7 +32,6 @@ body {
 
     text-align: center;
 }
-
 
 .app-header h1 {
     margin: 0;
@@ -63,7 +61,6 @@ body {
         1px solid #ddd;
 }
 
-
 .tab-button {
     border: none;
 
@@ -79,7 +76,6 @@ body {
     border-bottom:
         4px solid transparent;
 }
-
 
 .tab-button.active {
     border-bottom-color: #2e7d32;
@@ -103,11 +99,9 @@ main {
         60px;
 }
 
-
 .tab-content {
     display: none;
 }
-
 
 .tab-content.active {
     display: block;
@@ -122,7 +116,6 @@ main {
 .keg-card,
 .summary-card,
 .stats-card {
-
     background: white;
 
     border-radius: 16px;
@@ -136,11 +129,9 @@ main {
         rgba(0, 0, 0, 0.07);
 }
 
-
 .section-card h2,
 .summary-card h2,
 .stats-card h2 {
-
     margin-top: 0;
 }
 
@@ -161,7 +152,6 @@ input {
 
     font-size: 17px;
 }
-
 
 .normal-button {
     padding:
@@ -191,7 +181,6 @@ input {
 
     gap: 12px;
 }
-
 
 .start-keg-button {
     padding: 18px;
@@ -228,7 +217,6 @@ input {
     margin-bottom: 18px;
 }
 
-
 .current-keg h2 {
     margin-top: 0;
 
@@ -236,7 +224,6 @@ input {
 
     font-size: 25px;
 }
-
 
 .keg-actions {
     display: flex;
@@ -247,7 +234,6 @@ input {
 
     margin-top: 15px;
 }
-
 
 .close-keg-button {
     flex: 1;
@@ -287,7 +273,6 @@ input {
     margin-bottom: 20px;
 }
 
-
 .person-select-button {
     padding:
         13px 8px;
@@ -306,7 +291,6 @@ input {
 
     cursor: pointer;
 }
-
 
 .person-select-button.selected {
     background: #333;
@@ -328,7 +312,6 @@ input {
 
     padding: 18px;
 }
-
 
 .selected-person-name {
     text-align: center;
@@ -353,7 +336,6 @@ input {
     margin-bottom: 20px;
 }
 
-
 .selected-count {
     background: white;
 
@@ -364,7 +346,6 @@ input {
     text-align: center;
 }
 
-
 .selected-count-label {
     display: block;
 
@@ -372,7 +353,6 @@ input {
 
     margin-bottom: 4px;
 }
-
 
 .selected-count-value {
     font-size: 34px;
@@ -393,7 +373,6 @@ input {
 
     gap: 12px;
 }
-
 
 .big-plus-button {
     min-height: 110px;
@@ -416,7 +395,6 @@ input {
         rgba(0, 0, 0, 0.15);
 }
 
-
 .big-plus-button:active {
     transform: scale(0.96);
 }
@@ -437,7 +415,6 @@ input {
     margin-top: 12px;
 }
 
-
 .minus-action-button {
     min-height: 48px;
 
@@ -454,7 +431,6 @@ input {
 
     cursor: pointer;
 }
-
 
 .minus-action-button:active {
     transform: scale(0.97);
@@ -473,11 +449,9 @@ details summary {
     font-weight: bold;
 }
 
-
 .people-management {
     margin-top: 18px;
 }
-
 
 .add-person {
     display: flex;
@@ -487,11 +461,9 @@ details summary {
     margin-bottom: 18px;
 }
 
-
 .add-person input {
     flex: 1;
 }
-
 
 .management-person {
     display: flex;
@@ -510,11 +482,9 @@ details summary {
         1px solid #eee;
 }
 
-
 .management-person:first-child {
     border-top: none;
 }
-
 
 .management-person-name {
     font-size: 17px;
@@ -522,13 +492,11 @@ details summary {
     font-weight: bold;
 }
 
-
 .management-actions {
     display: flex;
 
     gap: 7px;
 }
-
 
 .management-button {
     padding:
@@ -542,7 +510,6 @@ details summary {
 
     cursor: pointer;
 }
-
 
 .management-delete {
     color: #a00000;
@@ -562,7 +529,6 @@ details summary {
     gap: 10px;
 }
 
-
 .summary-item {
     background: #f5f5f5;
 
@@ -570,7 +536,6 @@ details summary {
 
     border-radius: 10px;
 }
-
 
 .summary-value {
     display: block;
@@ -595,7 +560,6 @@ details summary {
     font-size: 23px;
 }
 
-
 .keg-meta {
     color: #666;
 
@@ -604,11 +568,9 @@ details summary {
     margin-bottom: 15px;
 }
 
-
 .history-people {
     margin-top: 18px;
 }
-
 
 .history-person {
     display: grid;
@@ -627,13 +589,11 @@ details summary {
         12px 0;
 }
 
-
 .history-person strong {
     display: block;
 
     font-size: 17px;
 }
-
 
 .payment {
     margin-top: 3px;
@@ -644,7 +604,6 @@ details summary {
 
     color: #2e7d32;
 }
-
 
 .small-edit-button {
     padding:
@@ -672,11 +631,9 @@ details summary {
         15px 0;
 }
 
-
 .stats-person:first-child {
     border-top: none;
 }
-
 
 .stats-person-name {
     font-size: 20px;
@@ -685,7 +642,6 @@ details summary {
 
     margin-bottom: 6px;
 }
-
 
 .stats-line {
     color: #444;
@@ -707,13 +663,11 @@ details summary {
     gap: 10px;
 }
 
-
 .file-label {
     display: inline-block;
 
     cursor: pointer;
 }
-
 
 .file-label input {
     display: none;
@@ -738,7 +692,6 @@ details summary {
     cursor: pointer;
 }
 
-
 .delete-all {
     width: 100%;
 
@@ -760,7 +713,6 @@ details summary {
         padding-right: 10px;
     }
 
-
     .tab-button {
         font-size: 14px;
 
@@ -768,12 +720,10 @@ details summary {
             14px 3px;
     }
 
-
     .people-selector {
         grid-template-columns:
             repeat(3, 1fr);
     }
-
 
     .big-plus-button {
         min-height: 105px;
@@ -781,29 +731,25 @@ details summary {
         font-size: 21px;
     }
 
-
     .add-person {
         flex-direction: column;
     }
-
 
     .summary-grid {
         grid-template-columns:
             1fr 1fr;
     }
 
-
     .management-person {
         align-items:
             flex-start;
     }
 
-
     .management-actions {
         flex-direction: column;
     }
-
 }
+
 
 /* =========================
    MOBILNÍ VÝBĚR ČLOVĚKA
@@ -871,7 +817,6 @@ details summary {
             rgba(0, 0, 0, 0.08);
     }
 
-
     .tab-button {
         padding: 8px 2px;
 
@@ -880,7 +825,6 @@ details summary {
         border-bottom: none;
         border-top: 4px solid transparent;
     }
-
 
     .tab-button.active {
         border-bottom: none;
@@ -897,7 +841,6 @@ details summary {
             8px
             20px;
     }
-
 
     .section-card,
     .summary-card,
@@ -929,7 +872,6 @@ details summary {
         margin-bottom: 14px;
     }
 
-
     .mobile-person-selector label {
         font-size: 14px;
         font-weight: bold;
@@ -946,7 +888,6 @@ details summary {
         border-radius: 12px;
     }
 
-
     .selected-person-name {
         font-size: 27px;
 
@@ -962,11 +903,9 @@ details summary {
         margin-bottom: 12px;
     }
 
-
     .selected-count {
         padding: 9px;
     }
-
 
     .selected-count-value {
         font-size: 30px;
@@ -980,7 +919,6 @@ details summary {
 
         gap: 10px;
     }
-
 
     .big-plus-button {
         min-height: 82px;
@@ -1001,7 +939,6 @@ details summary {
         margin-top: 9px;
     }
 
-
     .minus-action-button {
         min-height: 44px;
 
@@ -1019,7 +956,6 @@ details summary {
         border-radius: 12px;
     }
 
-
     .current-keg h2 {
         font-size: 21px;
     }
@@ -1031,13 +967,11 @@ details summary {
         gap: 7px;
     }
 
-
     .summary-item {
         padding: 9px;
 
         font-size: 13px;
     }
-
 
     .summary-value {
         font-size: 19px;
@@ -1050,13 +984,11 @@ details summary {
         padding: 5px 0;
     }
 
-
     .management-person {
         flex-direction: column;
 
         align-items: stretch;
     }
-
 
     .management-actions {
         display: grid;
@@ -1064,9 +996,86 @@ details summary {
         grid-template-columns: 1fr 1fr;
     }
 
-
     .management-button {
         min-height: 40px;
     }
+}
 
+
+/* =========================
+   UNDO A SOUHRN PLATEB
+========================= */
+
+.undo-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 12px;
+
+    padding: 10px 12px;
+
+    border-radius: 10px;
+
+    background: #fff8e1;
+
+    font-size: 14px;
+}
+
+.undo-button {
+    border: none;
+
+    border-radius: 9px;
+
+    padding: 9px 12px;
+
+    background: #555;
+
+    color: white;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    white-space: nowrap;
+}
+
+.payment-summary-row {
+    display: flex;
+
+    justify-content: space-between;
+
+    gap: 16px;
+
+    padding: 12px 0;
+
+    border-top: 1px solid #eee;
+
+    font-size: 18px;
+}
+
+.payment-summary-row:first-of-type {
+    border-top: none;
+}
+
+.payment-summary-row strong {
+    color: #2e7d32;
+
+    white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+
+    .undo-box {
+        font-size: 13px;
+    }
+
+    .data-buttons .normal-button,
+    .data-buttons .file-label {
+        width: 100%;
+
+        text-align: center;
+    }
 }
